@@ -3,6 +3,7 @@ package edu.wctc.method.lab2;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Scanner;
 
 
 /**
@@ -41,48 +42,69 @@ public class Employee {
         this.lastName = lastName;
         this.ssn = ssn;
     }
+    public void employeeOrientation() {
+        orientationDate = LocalDate.now();
+        meetWithHrForBenefitAndSalaryInfo();
+        meetDepartmentStaff();
+        updateInDeptPolicies();
+        changeCubeID();
+    }
+    public void updateInDeptPolicies() {
+        reviewDeptPolicies();
+    }
+    public void changeCubeID() {
+        System.out.println("Enter the Cube Id");
+        Scanner keyboard = new Scanner(System.in);
+        this.cubeId = keyboard.nextLine();
+        moveIntoCubicle(cubeId);
+
+    }
+    public String formatTodaysDate() {
+        if (orientationDate.compareTo(LocalDate.now()) > 1) {
+            throw new IllegalArgumentException("Enter a valid date");
+        }
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("M/d/yy");
+        String fmtDate = formatter.format(orientationDate);
+        return fmtDate;
+
+    }
 
     // Assume this must be performed first, and assume that an employee
     // would only do this once, upon being hired.
-    public void meetWithHrForBenefitAndSalaryInfo() {
+    private void meetWithHrForBenefitAndSalaryInfo() {
         metWithHr = true;
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("M/d/yy");
-        String fmtDate = formatter.format(orientationDate);
         System.out.println(firstName + " " + lastName + " met with HR on "
-                + fmtDate);
+                + formatTodaysDate());
     }
 
     // Assume this must be performed second, and assume that an employee
     // would only do this once, upon being hired.
-    public void meetDepartmentStaff() {
+    private void meetDepartmentStaff() {
         metDeptStaff = true;
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("M/d/yy");
-        String fmtDate = formatter.format(orientationDate);
         System.out.println(firstName + " " + lastName + " met with dept staff on "
-                + fmtDate);
+                + formatTodaysDate());
     }
 
     // Assume this must be performed third. And assume that because department
     // policies may change that this method may need to be called 
     // independently from other classes.
-    public void reviewDeptPolicies() {
+    private void reviewDeptPolicies() {
         reviewedDeptPolicies = true;
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("M/d/yy");
-        String fmtDate = formatter.format(orientationDate);
         System.out.println(firstName + " " + lastName + " reviewed dept policies on "
-                + fmtDate);
+                + formatTodaysDate());
     }
 
     // Assume this must be performed fourth. And assume that because employees
     // sometimes change office locations that this method may need to be called 
     // independently from other classes.
-    public void moveIntoCubicle(String cubeId) {
+    private void moveIntoCubicle(String cubeId) {
+        if (cubeId.equals("") || Integer.parseInt(cubeId) < 1) {
+            throw new IllegalArgumentException("Enter a valid cube ID");
+        }
         this.cubeId = cubeId;
         this.movedIn = true;
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("M/d/yy");
-        String fmtDate = formatter.format(orientationDate);
         System.out.println(firstName + " " + lastName + " moved into cubicle "
-                + cubeId + " on " + fmtDate);
+                + cubeId + " on " + formatTodaysDate());
     }
 
     public String getFirstName() {
